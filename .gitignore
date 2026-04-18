@@ -44,3 +44,12 @@ models/*.bin
 models/*.pt
 models/*.h5
 *.onnx
+
+# Local Claude context
+.claude/
+
+# Reference materials (copyrighted PDFs, personal notes)
+00_Reference_Materials/
+
+# Personal progress tracking
+_Tracking/

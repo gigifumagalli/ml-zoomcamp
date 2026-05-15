@@ -30,6 +30,7 @@ data/raw/
 # OS
 .DS_Store
 Thumbs.db
+*.textClipping
 
 # IDE
 .vscode/settings.json

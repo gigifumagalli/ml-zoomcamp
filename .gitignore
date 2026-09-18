@@ -54,3 +54,10 @@ models/*.h5
 
 # Personal progress tracking
 _Tracking/
+
+# Upstream course repo (cloned, not ours)
+00_Reference_Materials/mlzoomcamp-2026/
+
+# Copied upstream course material (lives in 00_Reference_Materials/mlzoomcamp-2026)
+01_Foundations/*/cohort2026/lessons/
+01_Foundations/*/cohort2026/notebooks/

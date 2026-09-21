@@ -13,6 +13,9 @@ Everything you need tomorrow is in this folder. Nothing else to download.
 2. **Read** [01-what-is-ml](lessons/01-what-is-ml.md) → [02-ml-vs-rules](lessons/02-ml-vs-rules.md) → [03-supervised-ml](lessons/03-supervised-ml.md) → [04-crisp-dm](lessons/04-crisp-dm.md) → [05-model-selection](lessons/05-model-selection.md) → [06-environment](lessons/06-environment.md). About 7,700 words — you have seen all of this before, so skim for vocabulary rather than studying it. The one worth watching instead of reading is [06-environment](lessons/06-environment.md) if anything in your setup feels stale.
 3. **Check the environment still works** — open [Homework1_2026.ipynb](Homework1_2026.ipynb), run the setup cell. It prints the pandas version, which is literally Q1.
 
+
+**Practice notebooks** (blank, one per lesson, sections match the lesson headings): [practice/07-numpy_practice.ipynb](practice/07-numpy_practice.ipynb) · [practice/08-linear-algebra_practice.ipynb](practice/08-linear-algebra_practice.ipynb) · [practice/09-pandas_practice.ipynb](practice/09-pandas_practice.ipynb)
+
 ## Slot 2 — 20:00–21:00
 
 4. **Read** [07-numpy](lessons/07-numpy.md), [08-linear-algebra](lessons/08-linear-algebra.md), [09-pandas](lessons/09-pandas.md) — then [10-summary](lessons/10-summary.md) if there is time. Notebooks for these three are in [notebooks/](notebooks/) if you want to run along.

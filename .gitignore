@@ -61,3 +61,6 @@ _Tracking/
 # Copied upstream course material (lives in 00_Reference_Materials/mlzoomcamp-2026)
 01_Foundations/*/cohort2026/lessons/
 01_Foundations/*/cohort2026/notebooks/
+
+# Downloaded dataset archive (re-downloadable)
+01_Foundations/Geron_Ch02_California_Housing/datasets/

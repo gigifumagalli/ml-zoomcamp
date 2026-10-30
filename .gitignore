@@ -45,6 +45,7 @@ models/*.bin
 models/*.pt
 models/*.h5
 *.onnx
+*.onnx.data
 
 # Local Claude context
 .claude/
@@ -59,8 +60,17 @@ _Tracking/
 00_Reference_Materials/mlzoomcamp-2026/
 
 # Copied upstream course material (lives in 00_Reference_Materials/mlzoomcamp-2026)
-01_Foundations/*/cohort2026/lessons/
-01_Foundations/*/cohort2026/notebooks/
+*/*/cohort2026/lessons/
+*/*/cohort2026/notebooks/
 
-# Downloaded dataset archive (re-downloadable)
+# Downloaded datasets (re-downloadable)
 01_Foundations/Geron_Ch02_California_Housing/datasets/
+02_Advanced_ML/Module_08_Deep_Learning/cohort2026/homework/data/
+
+# Obsidian vault settings (local)
+.obsidian/
+*.canvas
+
+# Local tutor-agent tooling and backups
+_claude_staging/
+**/.github/agents/

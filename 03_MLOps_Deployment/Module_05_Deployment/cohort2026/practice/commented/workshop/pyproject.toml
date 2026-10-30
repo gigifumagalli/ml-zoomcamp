@@ -1,0 +1,45 @@
+# Commented copy of 05-deployment/workshop/pyproject.toml (uv replaces pipenv).
+# The original is untouched in ../../../notebooks/workshop/pyproject.toml.
+#
+# GOAL:   declare the project and the packages it needs. 'uv init' creates this file,
+#         'uv add <pkg>' appends to dependencies, 'uv sync' builds .venv/ from it.
+# WHY:    same job as pipenv's Pipfile, but pyproject.toml is the Python packaging standard (PEP 621),
+#         and uv resolves and installs much faster. uv.lock (next to it) is the equivalent of
+#         Pipfile.lock: exact versions + hashes for every package, including indirect ones.
+#         'uv sync --locked' installs exactly the lock and FAILS if pyproject.toml and uv.lock disagree:
+#         that is what HW5 and its Dockerfile use.
+# SYNTAX: TOML. [table] headers, key = value, lists in [ ].
+#
+# Pipenv -> uv cheat sheet:
+#   pipenv install pkg       -> uv add pkg            pipenv install --dev pkg -> uv add --dev pkg
+#   pipenv install (fresh)   -> uv sync               pipenv install --deploy  -> uv sync --locked
+#   pipenv run cmd           -> uv run cmd            pipenv shell             -> source .venv/bin/activate
+
+# SYNTAX: [project] = standard metadata. requires-python limits the interpreter;
+#         the exact one is in .python-version (here 3.13; HW5 pins 3.11.15).
+[project]
+name = "mlzoomcamp-flask-uv"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+# WHY: '>=' is a floor, not a pin. The lock file is what freezes the versions.
+#      HW5's pyproject.toml uses '==' pins instead, so the lock and the file say the same thing.
+dependencies = [
+    "fastapi>=0.116.1",
+    "scikit-learn>=1.7.1",
+    "uvicorn>=0.35.0",
+]
+
+# GOAL: tools only needed during development (the test client), not in production.
+# WHY:  'uv sync --no-dev' (used in HW5's Dockerfile) leaves them out of the image.
+[dependency-groups]
+dev = [
+    "requests>=2.32.4",
+]
+
+# SYNTAX: [tool.uv] = settings for uv only.
+# WHY:    exclude-newer ignores package releases newer than the given window, so a resolve today
+#         and a resolve next week pick the same versions. HW5 uses a fixed date (2026-09-14).
+[tool.uv]
+exclude-newer = "7 days"

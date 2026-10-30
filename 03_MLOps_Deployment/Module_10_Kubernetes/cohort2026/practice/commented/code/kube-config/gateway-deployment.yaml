@@ -1,0 +1,36 @@
+# Commented copy of ../../../../notebooks/code/kube-config/gateway-deployment.yaml (lessons 10.7, 10.8).
+# GOAL:   run the Flask gateway as pods and tell them where the model service lives.
+# NOTE:   EKS version (ECR image). For kind (10.7) the lesson uses the local tag zoomcamp-10-gateway:002.
+# SYNTAX: kubectl apply -f gateway-deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  # NOTE:   no `replicas:` key -> the default, 1 pod.
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - name: gateway
+        image: 387546586013.dkr.ecr.eu-west-1.amazonaws.com/mlzoomcamp-images:zoomcamp-10-gateway-002
+        resources:
+          # WHY:  the gateway only downloads and resizes images: a tenth of a CPU and 128 MiB are enough.
+          #       This asymmetry (small gateway pods, big model pods) is the reason for two deployments.
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 9696
+        # GOAL:   configuration through environment variables (gateway.py reads TF_SERVING_HOST).
+        # WHY:    the same image works on the laptop, in compose and here; only this value changes.
+        # SYNTAX: env is a list of {name, value}; values are always strings.
+        env:
+          - name: TF_SERVING_HOST
+            value: tf-serving-clothing-model.default.svc.cluster.local:8500

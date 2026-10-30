@@ -1,0 +1,61 @@
+# Commented copy of ../../../../notebooks/workshop/k8s/deployment.yaml (2025 workshop).
+# GOAL:   the lecture's ping deployment plus the three things production adds: requests, probes,
+#         and an explicit image pull policy. HW10's deployment.yaml has the same shape - compare them.
+# SYNTAX: kubectl apply -f deployment.yaml
+#         kubectl rollout status deployment/clothing-classifier     (waits until the pods are Ready)
+#         kubectl logs -l app=clothing-classifier --tail=20         (-l = by label, all pods at once)
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clothing-classifier
+  # NOTE:   a label on the Deployment object itself - handy for `kubectl delete all -l app=...`;
+  #         it is NOT what the selector matches (that is template.metadata.labels).
+  labels:
+    app: clothing-classifier
+spec:
+  # WHY:    2 replicas: one pod can restart or be rescheduled while the other keeps serving.
+  replicas: 2
+  selector:
+    matchLabels:
+      app: clothing-classifier
+  template:
+    metadata:
+      labels:
+        app: clothing-classifier
+    spec:
+      containers:
+      - name: clothing-classifier
+        image: clothing-classifier:v1
+        # WHY:    Never = only use an image already on the node (loaded with `kind load docker-image`);
+        #         never contact a registry. IfNotPresent (HW10) = use the local one if there, else pull.
+        #         With kind, both mean: forget `kind load` and the pod cannot start.
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        resources:
+          # WHY:    requests = what the scheduler RESERVES on a node (a pod is placed only where its
+          #         requests fit); limits = the ceiling at run time. The HPA measures CPU use as a
+          #         percentage of the REQUEST, so without a cpu request the HPA has nothing to divide by.
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        # WHY:    liveness = "is it stuck?" - failing it RESTARTS the container.
+        #         initialDelaySeconds gives the app time to load the model before the first check.
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        # WHY:    readiness = "may it receive traffic?" - failing it removes the pod from the service's
+        #         endpoints (no restart). This is what makes `kubectl rollout status` wait for a real start.
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5

@@ -1,0 +1,29 @@
+# NOT a lecture file: churn-service.yaml rewritten for KServe 0.20+ (Oct 2026). Validated as YAML only;
+# NOT applied to a cluster. Pair it with model_2026/model.joblib from churn-train-2026.py.
+#
+# GOAL: same service, stock KServe image, probabilities via an environment variable.
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "churn"
+spec:
+  predictor:
+    # SYNTAX: the current style: say WHICH format the model is in, KServe picks the matching runtime
+    #         (kserve-sklearnserver). No image line: the runtime image matches your KServe version.
+    model:
+      modelFormat:
+        name: sklearn
+      # WHY: replace with your own location. A directory URI (s3://bucket/churn/) must contain ONE model file.
+      storageUri: "s3://YOUR-BUCKET/churn/model.joblib"
+      # WHY: makes the stock server call predict_proba() -> [[P(stay), P(churn)], ...]. This replaces the
+      #      custom predict_proba image of lesson 11.4.
+      env:
+        - name: PREDICT_PROBA
+          value: "true"
+      resources:
+        requests:
+          cpu: 300m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi

@@ -61,3 +61,8 @@ cohort2026/
 ```
 
 Full upstream repo (all modules, all cohorts): `00_Reference_Materials/mlzoomcamp-2026/` — `git pull` there to pick up homework for later modules as it is released.
+
+## Connections
+
+- [Home](../../../00_Reference_Materials/Home.md) · [Resource Map](../../../00_Reference_Materials/Resource_Map_Cohort2026.md)
+- [Playbook](../../../00_Reference_Materials/ML_Strategist_Playbook.md): *Manual → Production translation table*, Phase 1 *Frame the problem*

@@ -1,0 +1,45 @@
+# Commented copy of notebooks/code/clothes/clothes-service.yaml (lessons 11.5-11.6).
+# GOAL: the two-tier architecture of Module 10 (gateway + TF Serving) as ONE resource:
+#       transformer (URL -> image tensor, scores -> labels) in front of a TensorFlow predictor.
+# WHY:  KServe wires the two tiers itself: the transformer gets the predictor's address as --predictor_host.
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "clothes"
+spec:
+  transformer:
+    # SYNTAX: 'containers:' = a custom container, written like a pod spec.
+    containers:
+      # WHY: Alexey's prebuilt transformer image (2021-22, kfserving era). It is configured by env vars
+      #      instead of being built from image_transformer.py; image_transformer.py is the do-it-yourself version.
+      - image: "agrigorev/kfserving-keras-transformer:0.0.1"
+        # SYNTAX: KServe expects the transformer container to be called user-container.
+        name: user-container
+        env:
+          - name: MODEL_INPUT_SIZE
+            value: "299,299"
+          - name: KERAS_MODEL_NAME
+            value: "xception"
+          - name: MODEL_LABELS
+            value: "dress,hat,longsleeve,outwear,pants,shirt,shoes,shorts,skirt,t-shirt"
+        resources:
+          requests:
+            cpu: 300m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+  predictor:
+    # SYNTAX: 'tensorflow:' = KServe's built-in TF Serving runtime (current style: model.modelFormat.name: tensorflow).
+    tensorflow:
+      # WHY: a zipped SavedModel served from Alexey's private machine again: replace the URL.
+      #      TF Serving expects a numbered version folder inside: clothing-model/1/saved_model.pb.
+      storageUri: "http://172.31.13.90:8000/clothes/clothing-model/clothing-model.zip"
+      # WHY: Xception needs more than the sklearn model: 0.5-1 CPU and 512Mi.
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 512Mi

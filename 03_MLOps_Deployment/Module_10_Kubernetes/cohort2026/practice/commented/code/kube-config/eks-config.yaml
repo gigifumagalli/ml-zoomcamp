@@ -1,0 +1,22 @@
+# Commented copy of ../../../../notebooks/code/kube-config/eks-config.yaml (lesson 10.8). OPTIONAL, COSTS MONEY.
+# GOAL:   describe an EKS cluster for eksctl (not for kubectl - this is not a Kubernetes manifest).
+# WHY:    EKS is not in the AWS free tier: you pay for the control plane AND for the m5.xlarge node
+#         per hour, plus the load balancer the gateway service creates. Delete it the same day:
+#         eksctl delete cluster --name mlzoomcamp-eks
+# SYNTAX: eksctl create cluster -f eks-config.yaml     (15-20 minutes; also points kubectl at EKS)
+
+# SYNTAX: eksctl's own API group and kind.
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: mlzoomcamp-eks
+  # NOTE:   eu-west-1 = Ireland. eu-central-2 is Zurich; pick the region where your ECR images are.
+  region: eu-west-1
+
+# GOAL:   the worker machines. All nodes in one group share an instance type, so you could put the model
+#         on a GPU group and the gateway on a CPU group. One m5.xlarge (4 vCPU, 16 GB) runs both here.
+nodeGroups:
+  - name: ng-m5-xlarge
+    instanceType: m5.xlarge
+    desiredCapacity: 1

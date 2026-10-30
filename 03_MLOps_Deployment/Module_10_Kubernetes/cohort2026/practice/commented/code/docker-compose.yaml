@@ -1,0 +1,23 @@
+# Commented copy of ../../../notebooks/code/docker-compose.yaml (lesson 10.4).
+# GOAL:   run the model container and the gateway container together, on one private network.
+# WHY:    two separate `docker run`s cannot see each other: inside the gateway container 'localhost' is the
+#         gateway itself. Compose puts all services on one network where each SERVICE NAME is a hostname.
+# SYNTAX: docker compose up (foreground) / up -d (background) / down (stop and remove).
+#         Docker Desktop ships Compose v2 as `docker compose` (space); `docker-compose` is the old v1 binary.
+
+# NOTE:   Compose v2 ignores this key and prints "the attribute `version` is obsolete". Harmless.
+version: "3.9"
+services:
+  # SYNTAX: the key (clothing-model) is the service name = the DNS name other services use.
+  clothing-model:
+    image: zoomcamp-10-model:xception-v4-001
+    # WHY:  no `ports:` here. Only the gateway talks to the model, inside the compose network,
+    #       so the model is not published to the host at all (the same idea as a ClusterIP service).
+  gateway:
+    image: zoomcamp-10-gateway:002
+    environment:
+      # GOAL: point the gateway at the model by service name; gateway.py reads TF_SERVING_HOST.
+      - TF_SERVING_HOST=clothing-model:8500
+    ports:
+      # SYNTAX: "HOST:CONTAINER" - your Mac's 9696 -> the container's 9696, so test.py can reach it.
+      - "9696:9696"

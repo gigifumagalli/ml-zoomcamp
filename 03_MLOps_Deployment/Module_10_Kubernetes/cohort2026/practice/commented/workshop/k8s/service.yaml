@@ -1,0 +1,21 @@
+# Commented copy of ../../../../notebooks/workshop/k8s/service.yaml (2025 workshop).
+# GOAL:   expose the deployment on a fixed port of every node (NodePort).
+# WHY:    NodePort opens 30080 on the NODE. A kind node is a Docker container, so that port is not on your
+#         Mac unless the cluster was created with extraPortMappings - which is why curl localhost:30080 fails
+#         and the workshop falls back to:  kubectl port-forward service/clothing-classifier 30080:8080
+#         HW10 skips the detour and uses ClusterIP + port-forward from the start.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: clothing-classifier
+spec:
+  type: NodePort
+  selector:
+    app: clothing-classifier
+  ports:
+  # SYNTAX: protocol defaults to TCP; nodePort must be in 30000-32767 (or omit it and Kubernetes picks one).
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 30080

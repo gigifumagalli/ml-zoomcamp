@@ -1,0 +1,31 @@
+# Commented copy of ../../../../notebooks/workshop/k8s/hpa.yaml (2025 workshop).
+# GOAL:   let Kubernetes change the number of replicas with the load (Horizontal Pod Autoscaler).
+# WHY:    "horizontal" = more pods, not bigger pods. Every ~15 s the HPA computes
+#             desired = ceil(current_replicas * current_cpu% / target_cpu%)
+#         and clamps it to [minReplicas, maxReplicas]. cpu% is relative to the pods' cpu REQUEST.
+# NOTE:   needs metrics-server, which kind does not install. Without it TARGETS shows <unknown> and
+#         nothing scales. Install + the kind TLS patch are in the commented notebook (Workshop section).
+# SYNTAX: kubectl apply -f hpa.yaml ;  kubectl get hpa -w   (-w = watch, refreshes until Ctrl-C)
+
+# SYNTAX: autoscaling/v2 is the current API (v2beta2 was removed in Kubernetes 1.26).
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: clothing-classifier-hpa
+spec:
+  # GOAL:   which object to scale - by kind + name, not by label.
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: clothing-classifier
+  # WHY:    the HPA overrides the deployment's `replicas:` once it is active; minReplicas is the floor.
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        # WHY:  aim for pods using 50% of their requested CPU on average; above it -> scale out.
+        averageUtilization: 50

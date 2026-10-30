@@ -1,0 +1,14 @@
+# Commented copy of notebooks/code/iris/iris-example.yaml (lesson 11.2): the "hello world" of KServe.
+# GOAL: prove the KServe install works before deploying anything of ours.
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "sklearn-iris"
+spec:
+  predictor:
+    sklearn:
+      # WHY: the lecture's bucket path is gone. Lesson 11.2's July 2022 update (and KServe's own samples
+      #      today) use gs://kfserving-examples/models/sklearn/1.0/model instead.
+      # SYNTAX: a gs:// URI is downloaded by KServe's storage initializer before the server starts.
+      #storageUri: "gs://kfserving-samples/models/sklearn/iris"
+      storageUri: "gs://kfserving-examples/models/sklearn/1.0/model"

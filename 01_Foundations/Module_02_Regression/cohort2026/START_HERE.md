@@ -66,3 +66,9 @@ cohort2026/
 ├── lessons/                         ← 17 written lessons + images/
 └── notebooks/                       ← Alexey's lecture notebook
 ```
+
+## Connections
+
+- [Home](../../../00_Reference_Materials/Home.md) · [Resource Map](../../../00_Reference_Materials/Resource_Map_Cohort2026.md)
+- [Playbook](../../../00_Reference_Materials/ML_Strategist_Playbook.md): `LinearRegression`, `Ridge`, *Should I transform the target?*, *Does this step change my model?*
+- Used by: [Capstone 1: turbofan RUL](../../../00_Reference_Materials/projects/Capstone1_CMAPSS.md)

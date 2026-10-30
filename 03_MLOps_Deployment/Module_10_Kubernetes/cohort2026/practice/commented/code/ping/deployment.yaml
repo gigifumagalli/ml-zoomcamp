@@ -1,0 +1,46 @@
+# Commented copy of ../../../../notebooks/code/ping/deployment.yaml (lessons 10.6, 10.7).
+# GOAL:   tell Kubernetes "keep N pods running this image, with these resources and this port".
+# WHY:    you describe the DESIRED state; Kubernetes' controllers keep reality equal to it
+#         (a pod crashes -> a new one is started). You never start containers by hand.
+# SYNTAX: kubectl apply -f deployment.yaml      (create or update)
+#         kubectl get deployment / kubectl get pod / kubectl describe pod <name>
+
+# SYNTAX: every manifest starts with apiVersion + kind; Deployments live in the apps/v1 API group.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # GOAL:   the deployment's own name. Pods get <name>-<hash>-<id>, e.g. ping-deployment-7df687f8cd-tfkgd.
+  name: ping-deployment
+spec:
+  # GOAL:   how many identical pods.
+  replicas: 1
+  # WHY:    the selector is how the deployment finds ITS pods: every pod carrying label app=ping.
+  #         It must match template.metadata.labels below, or the API server rejects the deployment.
+  selector:
+    matchLabels:
+      app: ping
+  # GOAL:   the pod template: what each pod looks like.
+  template:
+    metadata:
+      # WHY:  this label is the glue. The deployment selects on it AND the service (service.yaml) routes
+      #       traffic to it. A typo here = a service with no endpoints = "connection refused".
+      labels:
+        app: ping
+    spec:
+      containers:
+      # SYNTAX: a YAML list item starts with "- "; a pod may hold several containers (here one).
+      - name: ping-pod
+        # WHY:  a local tag. kind does not see your Docker Desktop images: run
+        #       `kind load docker-image ping:v001` first, or the pod sits in ErrImagePull / ImagePullBackOff.
+        image: ping:v001
+        resources:
+          # WHY:  limits = hard ceiling. Above the memory limit the container is killed (OOMKilled);
+          #       above the CPU limit it is throttled. 200m = 0.2 CPU ("milli-cores").
+          #       Lesson 10.7 lowers this to 100m so the TF Serving pod fits on the small kind node.
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        ports:
+        # WHY:  the port the app listens on INSIDE the container (gunicorn --bind=0.0.0.0:9696).
+        #       Services point their targetPort at this number.
+        - containerPort: 9696

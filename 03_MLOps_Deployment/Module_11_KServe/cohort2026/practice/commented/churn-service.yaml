@@ -1,0 +1,40 @@
+# Commented copy of notebooks/code/churn/churn-service.yaml (lessons 11.3-11.4).
+# Apply with:  kubectl apply -f churn-service.yaml     Check with:  kubectl get inferenceservice churn
+#
+# GOAL: declare "serve this sklearn model" and let KServe create the Deployment, Service, routing and
+#       autoscaling that Module 10 wrote by hand.
+# WHY:  one ~15-line resource replaces the deployment.yaml + service.yaml pair: that is KServe's pitch.
+
+# SYNTAX: apiVersion = API group/version of the resource. serving.kserve.io/v1beta1 is STILL the current
+#         InferenceService version in KServe 0.21 (it never went v1), so this line is not outdated.
+apiVersion: "serving.kserve.io/v1beta1"
+# SYNTAX: kind = the resource type. InferenceService is a Custom Resource that exists only after KServe is installed.
+kind: "InferenceService"
+metadata:
+  # WHY: the name becomes part of the URL: /v1/models/churn:predict and the Host header churn.default.example.com.
+  name: "churn"
+spec:
+  # GOAL: the predictor = the tier that runs the model (the transformer tier is in clothes-service.yaml).
+  predictor:
+    # SYNTAX: 'sklearn:' picks KServe's built-in scikit-learn server. Still accepted; current docs write
+    #         model: { modelFormat: { name: sklearn } } instead (see churn-service-2026.yaml).
+    sklearn:
+      # WHY: the stock server calls .predict() -> 0/1 labels. Lesson 11.4 builds a custom image that calls
+      #      .predict_proba() instead. Alexey's image (Python 3.8, scikit-learn 1.0) only matches a model
+      #      pickled with scikit-learn 1.0. Current KServe has an env var for this (PREDICT_PROBA=true),
+      #      so the custom image is no longer needed.
+      #image: kserve-sklearnserver:predict_proba-3.8-1.0
+      image: agrigorev/sklearnserver:3.8-1.0-predict-proba
+      # WHY: where the storage initializer downloads model.joblib from before the server starts.
+      #      172.31.13.90 is a PRIVATE IP of Alexey's EC2 machine (python -m http.server 8000): it will not
+      #      resolve for you. Use a URL your cluster can reach (s3://, gs://, https://, pvc://).
+      storageUri: "http://172.31.13.90:8000/churn/model.joblib"
+      # SYNTAX: requests = what the scheduler reserves; limits = the hard ceiling. 300m = 0.3 CPU cores.
+      # WHY: without limits one model could starve every other pod on the node.
+      resources:
+        requests:
+          cpu: 300m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi

@@ -69,3 +69,9 @@ cohort2026/
     ├── homework3_2026.md                 ← the official question text
     └── course_lead_scoring_2026.csv      ← the 2026 pinned dataset (5,000 leads)
 ```
+
+## Connections
+
+- [Home](../../../00_Reference_Materials/Home.md) · [Resource Map](../../../00_Reference_Materials/Resource_Map_Cohort2026.md)
+- [Playbook](../../../00_Reference_Materials/ML_Strategist_Playbook.md): *First look at a new dataset*, *Choosing the split*, *Classification EDA*, `LogisticRegression`
+- Used by: [Midterm: hospital readmission](../../../00_Reference_Materials/projects/Midterm_Readmission.md)

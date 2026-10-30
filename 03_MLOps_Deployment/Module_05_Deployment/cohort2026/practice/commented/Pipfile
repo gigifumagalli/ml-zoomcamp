@@ -1,0 +1,29 @@
+# Commented copy of 05-deployment/code/Pipfile (lesson 5.5: pipenv). Original in ../../notebooks/code/.
+# The homework does NOT use pipenv: it uses uv with pyproject.toml + uv.lock (commented/workshop/pyproject.toml).
+#
+# GOAL:   declare the packages this project needs, separately from every other project on the machine.
+# WHY:    two projects can need two different scikit-learn versions; one shared environment cannot hold both.
+#         Pipfile = what you ASKED for; Pipfile.lock = the exact versions + hashes that were resolved
+#         (pipenv install --deploy reproduces the lock exactly). uv's pair is pyproject.toml / uv.lock.
+# SYNTAX: TOML. [section] headers, key = "value". "*" = any version, "==0.24.2" = exactly this version.
+
+# SYNTAX: where packages are downloaded from (the public PyPI index).
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+# GOAL: runtime dependencies. scikit-learn is pinned because the pickle must be loaded by the SAME
+#       version that wrote it; flask + gunicorn serve the model.
+[packages]
+numpy = "*"
+scikit-learn = "==0.24.2"
+flask = "*"
+gunicorn = "*"
+
+# GOAL: tools needed only while developing (tests, notebooks). Empty here.
+[dev-packages]
+
+# WHY: pins the interpreter too. The Dockerfile's base image (python:3.8.12-slim) matches it.
+[requires]
+python_version = "3.8"

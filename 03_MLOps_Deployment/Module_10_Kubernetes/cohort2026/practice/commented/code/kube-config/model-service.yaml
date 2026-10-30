@@ -1,0 +1,21 @@
+# Commented copy of ../../../../notebooks/code/kube-config/model-service.yaml (lesson 10.7).
+# GOAL:   a stable in-cluster address for the TF Serving pods, used by the gateway.
+# WHY:    nobody outside the cluster should call the model directly, so this service is internal.
+#         The lesson's version writes `type: ClusterIP` explicitly; the repo file leaves `type` out,
+#         which gives the same result because that is the default.
+# SYNTAX: kubectl apply -f model-service.yaml
+#         kubectl port-forward service/tf-serving-clothing-model 8500:8500   (test from the Mac)
+
+apiVersion: v1
+kind: Service
+metadata:
+  # WHY:    DNS name in the cluster: tf-serving-clothing-model.default.svc.cluster.local
+  #         = <service name>.<namespace>.svc.cluster.local. gateway-deployment.yaml uses exactly this.
+  name: tf-serving-clothing-model
+spec:
+  selector:
+    app: tf-serving-clothing-model
+  ports:
+  # SYNTAX: same number on both sides; the service port does not have to differ from the pod port.
+  - port: 8500
+    targetPort: 8500

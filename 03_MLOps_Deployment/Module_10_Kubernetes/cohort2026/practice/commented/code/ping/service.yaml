@@ -1,0 +1,28 @@
+# Commented copy of ../../../../notebooks/code/ping/service.yaml (lesson 10.6).
+# GOAL:   one stable name + port in front of the deployment's pods, which come and go with changing IPs.
+# WHY:    clients (and other pods) should never address a pod directly. The service load-balances
+#         across every pod whose labels match the selector.
+# SYNTAX: kubectl apply -f service.yaml
+#         kubectl get service                         (TYPE, CLUSTER-IP, EXTERNAL-IP, PORT(S))
+#         kubectl port-forward service/ping 8080:80   then  curl localhost:8080/ping  -> PONG
+
+apiVersion: v1
+kind: Service
+metadata:
+  # WHY:    this name becomes a DNS name inside the cluster: ping.default.svc.cluster.local
+  name: ping
+spec:
+  # WHY:    LoadBalancer = ask the platform for an external IP. On EKS/GKE the cloud creates a real load
+  #         balancer. On kind nothing provides one, so EXTERNAL-IP stays <pending> forever: use
+  #         port-forward (the lesson's MetalLB recipe assumes Linux; on macOS the kind network is not
+  #         reachable from the host, so stay with port-forward). Omit `type` and Kubernetes uses its default,
+  #         internal-only type (lesson 10.5).
+  type: LoadBalancer
+  # GOAL:   route to pods labelled app=ping (deployment.yaml, template.metadata.labels).
+  selector:
+    app: ping
+  ports:
+  # SYNTAX: port = the service's own port (what clients call); targetPort = the containerPort on the pod.
+  #         port-forward service/ping 8080:80 means: my Mac's 8080 -> service port 80 -> pod port 9696.
+  - port: 80
+    targetPort: 9696

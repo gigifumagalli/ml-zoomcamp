@@ -1,0 +1,18 @@
+# Commented copy of ../../../../notebooks/code/kube-config/gateway-service.yaml (lessons 10.7, 10.8).
+# GOAL:   the public entry point: clients talk to this service, never to the model.
+# WHY:    LoadBalancer on EKS -> AWS creates an Elastic Load Balancer with a public DNS name (10.8).
+#         On kind -> EXTERNAL-IP stays <pending>; test with kubectl port-forward service/gateway 8080:80.
+#         10.8 warns: that AWS load balancer is open to anyone who knows the URL.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+spec:
+  type: LoadBalancer
+  selector:
+    app: gateway
+  ports:
+  # SYNTAX: clients call port 80 (plain HTTP default); the service forwards to the pods' 9696.
+  - port: 80
+    targetPort: 9696

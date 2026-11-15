@@ -2,39 +2,33 @@
 
 Everything is in this folder. The two image datasets (clothing, ~110 MB; curly/straight hair, ~100 MB) are already downloaded and unpacked. Pre-trained Xception weights (~90 MB) download themselves the first time the lecture code runs.
 
-**Homework 8:** platform deadline **Mon 30 Nov**. Lessons Nov 11–16, then peer reviews and Austria; HW8 is the first session back.
+**Homework 8:** platform deadline **Mon 30 Nov, 23:00 UTC** (shown as Tue 1 Dec 00:00 on the platform). Replanned 2026-11-15: **Module 8 complete by Fri 27 Nov midday** (Austria Nov 19–25, Italy Fri 27 afternoon – Sun 29).
 **Submit at:** https://courses.datatalks.club/ml-zoomcamp-2026/homework/hw08
 
 The lecture is **TensorFlow/Keras**; the 2026 homework is **PyTorch**. Same ideas (CNN, logits, loss, optimizer, augmentation), different API. The bridge is the PyTorch workshop in [notebooks/pytorch/README.md](notebooks/pytorch/README.md) and the Keras → PyTorch table at the end of `practice/08-deep-learning_commented.ipynb`.
 
 ---
 
-## Sessions
+## Sessions (replanned 2026-11-15)
 
-**Session 1 — Tue 10 Nov, 08:00. Setup.**
-1. PyTorch for HW8 (required). A separate env, so the pinned NumPy doesn't touch `ml-zoomcamp`:
-   ```bash
-   conda create -n mlzc-torch python=3.11 -y && conda activate mlzc-torch
-   pip install torch==2.9.0 torchvision==0.24.0 numpy==2.3.3 Pillow==11.3.0 jupyter matplotlib
-   python -c "import torch, torchvision; print(torch.__version__, torchvision.__version__)"
-   ```
-   Not `pip install -r homework/requirements-cpu.txt` on the Mac: see trap 1. Background: [install_pytorch.md](notebooks/pytorch/install_pytorch.md) (written for Linux/NVIDIA; on the Mac only the CPU path applies).
-2. TensorFlow, only if you want to run the lecture locally: `conda create -n mlzc-tf python=3.11 -y && conda activate mlzc-tf && pip install tensorflow jupyter matplotlib`. Plain `tensorflow` runs natively on Apple Silicon; skip `tensorflow-metal`. [15-install.md](lessons/15-install.md) is a WSL2/CUDA guide; its last section (free Kaggle/Colab T4 GPU) is the useful part for full-length runs.
-3. AWS for Module 9: create the account, turn on MFA for the root user, and in Billing → Budgets create a monthly cost budget (e.g. $5) with an e-mail alert.
+**Session 1 — Sun 15 Nov.** Setup + first lessons.
+1. PyTorch for HW8 (required): conda env `mlzc-torch` (Python 3.11, `torch==2.9.0 torchvision==0.24.0 numpy==2.3.3 Pillow==11.3.0 jupyter matplotlib`), created by Claude on Nov 15. Not `pip install -r homework/requirements-cpu.txt` on the Mac: see trap 1.
+2. Read [8.1](lessons/01-fashion-classification.md) → [8.2](lessons/02-tensorflow-keras.md) (~1,770 words). The clothing dataset, TensorFlow vs Keras, an image as a NumPy array.
+3. TensorFlow is optional (only to run the lecture locally): `conda create -n mlzc-tf python=3.11 -y && conda activate mlzc-tf && pip install tensorflow jupyter matplotlib`. [15-install.md](lessons/15-install.md) is a WSL2/CUDA guide; its last section (free Kaggle/Colab T4 GPU) is the useful part for full-length runs.
 
-**Session 2 — Wed 11 Nov, 08:00.** Read [8.1](lessons/01-fashion-classification.md) → [8.2](lessons/02-tensorflow-keras.md) (~1,770 words). The clothing dataset, TensorFlow vs Keras, an image as a NumPy array. In `practice/`: load and resize one image.
+**Session 2 — Mon 16 Nov, 08:00.** Read [8.3](lessons/03-pretrained-models.md) → [8.4](lessons/04-conv-neural-nets.md) (~3,910 words). Pre-trained Xception on one image, `preprocess_input`, `decode_predictions`; then filters, feature maps, dense layers.
 
-**Session 3 — Wed 11 Nov, 20:00 (long hour).** Read [8.3](lessons/03-pretrained-models.md) → [8.4](lessons/04-conv-neural-nets.md) (~3,910 words). Run pre-trained Xception on one image, `preprocess_input`, `decode_predictions`; then filters, feature maps, dense layers.
+Tue 17 Nov: the three midterm peer reviews, 08:00 until done.
 
-**Session 4 — Thu 12 Nov, 08:00.** Read [8.5](lessons/05-transfer-learning.md) (~3,010 words). `ImageDataGenerator`, frozen base + new head, logits and `from_logits=True`, first `fit` (2–3 epochs).
+**Session 3 — Wed 18 Nov, 08:00–10:00** (the peer-review buffer, free if the reviews are done on Tue). Read [8.5](lessons/05-transfer-learning.md) (~3,010 words), then [8.6](lessons/06-learning-rate.md) → [8.8](lessons/08-more-layers.md) (~3,800 words). Frozen base + new head, logits and `from_logits=True`; the `make_model` factory, learning-rate sweep, `ModelCheckpoint`, an inner dense layer.
 
-**Session 5 — Fri 13 Nov, 08:00.** Read [8.6](lessons/06-learning-rate.md) → [8.8](lessons/08-more-layers.md) (~3,800 words). The `make_model` factory, learning-rate sweep, `ModelCheckpoint`, an inner dense layer.
+Nov 19–25: Viaggio Austria, no study.
 
-**Session 6 — Mon 16 Nov, 08:00.** **The midterm closes tonight: confirm the submission first.** Then read [8.9](lessons/09-dropout.md) → [8.14](lessons/14-explore-more.md) (~4,130 words). Dropout, augmentation (training set only), the 299×299 model, load the best checkpoint and predict.
+**Session 4 — Thu 26 Nov, 08:00.** Read [8.9](lessons/09-dropout.md) → [8.14](lessons/14-explore-more.md) (~4,130 words). Dropout, augmentation (training set only), the 299×299 model, load the best checkpoint and predict.
 
-Nov 17–18: midterm peer reviews. Nov 19–25: Viaggio Austria, no study.
+**Session 5 — Fri 27 Nov, 08:00 until done (before midday).** HW8 **Q1–Q6** in `homework/Homework8_2026.ipynb`: setup, Q1–Q2, the training loop, baseline run (Q3–Q4), augmented run (Q5–Q6). **Submit.**
 
-**Session 7 — Thu 26 Nov, 08:00.** HW8 **Q1–Q6** in `homework/Homework8_2026.ipynb`: setup, Q1–Q2, the training loop, baseline run (Q3–Q4), augmented run (Q5–Q6). **Submit** (closes Mon 30 Nov).
+AWS account + billing alarm (needed for Module 9, not for Module 8): slot set at the weekly review.
 
 > Full-length lecture runs (10–50 epochs, ~15 models) take hours on a laptop CPU. `QUICK_RUN = True` in the commented notebook caps every run at 3 epochs; use Kaggle/Colab for the real numbers.
 > Checkpoints are ~85 MB each and the two image folders ~210 MB together: keep `*.keras`, `*.h5`, `notebooks/clothing-dataset-small/`, `homework/data/` and `homework/runs/` out of git.

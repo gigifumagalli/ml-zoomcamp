@@ -16,15 +16,17 @@ The lecture is **TensorFlow/Keras**; the 2026 homework is **PyTorch**. Same idea
 2. Read [8.1](lessons/01-fashion-classification.md) → [8.2](lessons/02-tensorflow-keras.md) (~1,770 words). The clothing dataset, TensorFlow vs Keras, an image as a NumPy array.
 3. TensorFlow is optional (only to run the lecture locally): `conda create -n mlzc-tf python=3.11 -y && conda activate mlzc-tf && pip install tensorflow jupyter matplotlib`. [15-install.md](lessons/15-install.md) is a WSL2/CUDA guide; its last section (free Kaggle/Colab T4 GPU) is the useful part for full-length runs.
 
-**Session 2 — Mon 16 Nov, 08:00.** Read [8.3](lessons/03-pretrained-models.md) → [8.4](lessons/04-conv-neural-nets.md) (~3,910 words). Pre-trained Xception on one image, `preprocess_input`, `decode_predictions`; then filters, feature maps, dense layers.
+**Session 1b — Sun 15 Nov, afternoon.** Done: [8.3](lessons/03-pretrained-models.md) → [8.4](lessons/04-conv-neural-nets.md) (pulled forward from Monday). Pre-trained Xception on one image, `preprocess_input`, `decode_predictions`; filters, feature maps, dense layers.
+
+**Session 2 — Mon 16 Nov, 08:00.** Read [8.5](lessons/05-transfer-learning.md) (~3,010 words). `ImageDataGenerator`, frozen base + new head, logits and `from_logits=True`, first `fit`.
 
 Tue 17 Nov: the three midterm peer reviews, 08:00 until done.
 
-**Session 3 — Wed 18 Nov, 08:00–10:00** (the peer-review buffer, free if the reviews are done on Tue). Read [8.5](lessons/05-transfer-learning.md) (~3,010 words), then [8.6](lessons/06-learning-rate.md) → [8.8](lessons/08-more-layers.md) (~3,800 words). Frozen base + new head, logits and `from_logits=True`; the `make_model` factory, learning-rate sweep, `ModelCheckpoint`, an inner dense layer.
+**Session 3 — Wed 18 Nov, 08:00–10:00** (peer reviews first if any is left from Tuesday). [8.6](lessons/06-learning-rate.md) → [8.9](lessons/09-dropout.md) (~5,000 words): the `make_model` factory, learning-rate sweep, `ModelCheckpoint`, an inner dense layer, dropout.
 
 Nov 19–25: Viaggio Austria, no study.
 
-**Session 4 — Thu 26 Nov, 08:00.** Read [8.9](lessons/09-dropout.md) → [8.14](lessons/14-explore-more.md) (~4,130 words). Dropout, augmentation (training set only), the 299×299 model, load the best checkpoint and predict.
+**Session 4 — Thu 26 Nov, 08:00.** [8.10](lessons/10-augmentation.md) → [8.14](lessons/14-explore-more.md) (~2,900 words). Augmentation (training set only), the 299×299 model, load the best checkpoint and predict.
 
 **Session 5 — Fri 27 Nov, 08:00 until done (before midday).** HW8 **Q1–Q6** in `homework/Homework8_2026.ipynb`: setup, Q1–Q2, the training loop, baseline run (Q3–Q4), augmented run (Q5–Q6). **Submit.**
 

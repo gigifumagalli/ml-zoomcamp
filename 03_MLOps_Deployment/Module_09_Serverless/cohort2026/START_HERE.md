@@ -11,14 +11,14 @@ Everything is in this folder. Nothing to download: the two ONNX models (HW9 hair
 
 ## Sessions
 
-**Session 1 — Fri 27 Nov, 08:00.** Read [9.1](lessons/01-intro.md) → [9.4](lessons/04-preparing-code.md) (~4,000 words, ~17 min), then the workshop README's "AWS Lambda" and "TensorFlow/PyTorch Models" parts. In `practice/`: the handler as a plain function, the scikit-learn Lambda, an ONNX session (inputs/outputs), preprocessing by hand, `NEAREST` vs `BILINEAR`, calling `lambda_function.py` locally (commented notebook 9.1 – 9.4).
+**Session 1 — Mon 30 Nov, 08:00** (moved from Fri 27 Nov at the Nov 16 weekly review: Fri 27 Nov is HW8, then Italy until Sun 29 Nov). Read [9.1](lessons/01-intro.md) → [9.4](lessons/04-preparing-code.md) (~4,000 words, ~17 min), then the workshop README's "AWS Lambda" and "TensorFlow/PyTorch Models" parts. In `practice/`: the handler as a plain function, the scikit-learn Lambda, an ONNX session (inputs/outputs), preprocessing by hand, `NEAREST` vs `BILINEAR`, calling `lambda_function.py` locally (commented notebook 9.1 – 9.4).
 
-**Session 2 — Mon 30 Nov, 08:00.** Read [9.5](lessons/05-docker-image.md) → [9.7](lessons/07-api-gateway.md) (~3,000 words, ~12 min): the Lambda base image, ECR + creating the function, API Gateway and its two event shapes (commented notebook 9.5 – 9.7). Then HW9 **setup, Q1 – Q4** (all local Python). HW8 closes tonight.
+**Session 2 — Mon 30 Nov, 20:00 (extra evening slot).** If HW8 was not submitted on Fri 27 Nov, finish it first (closes tonight 23:00 UTC = midnight local) and move this session to Tue 1 Dec 08:00. Read [9.5](lessons/05-docker-image.md) → [9.7](lessons/07-api-gateway.md) (~3,000 words, ~12 min): the Lambda base image, ECR + creating the function, API Gateway and its two event shapes (commented notebook 9.5 – 9.7). Then HW9 **setup, Q1 – Q4** (all local Python).
 
-**Session 3 — Tue 1 Dec, 08:00.** HW9 **smoke test, Q5, Q6** (build and run the container, curl it), check, **submit** (target; closes Mon 7 Dec). [9.8](lessons/08-summary.md) → [9.10](lessons/10-updates.md) (~1,000 words) as reading in the evening slot. Playbook cards: serverless vs serverful, ONNX as the inference format, preprocessing as part of the model interface.
+**Session 3 — Tue 1 Dec, 08:00.** HW9 **smoke test, Q5, Q6** (build and run the container, curl it), check, **submit** (target; closes Mon 7 Dec). If the fallback above was used: Wed 2 Dec 20:00. [9.8](lessons/08-summary.md) → [9.10](lessons/10-updates.md) (~1,000 words) as reading in the evening slot. Playbook cards: serverless vs serverful, ONNX as the inference format, preprocessing as part of the model interface.
 
-> Sun 29 Nov 09:00 – 11:00 is the Capstone 1 weekend block, not Module 9.
-> AWS account, CLI and billing alarm come from the November setup session (Module 8 week). Lambda + API Gateway stay inside the free tier for test calls; afterwards `aws lambda delete-function`, `aws apigateway delete-rest-api` and `aws ecr delete-repository --force` (the ECR image is the only part that keeps billing).
+> Italy Fri 27 Nov afternoon – Sun 29 Nov: no study.
+> AWS account, CLI and billing alarm: Mon 7 Dec 20:00 (needed for the capstone cloud deployment). HW9 runs locally, so the AWS part of HW9 is skipped unless the account exists by then. Lambda + API Gateway stay inside the free tier for test calls; afterwards `aws lambda delete-function`, `aws apigateway delete-rest-api` and `aws ecr delete-repository --force` (the ECR image is the only part that keeps billing).
 > Docker Desktop must be running for Q6 and for building the workshop image.
 > Only three slots. If it gets tight, drop the AWS deployment first (optional in HW9, not graded), then Q5 – Q6. Homework isn't required for the certificate.
 
